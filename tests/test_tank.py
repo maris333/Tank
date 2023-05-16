@@ -58,16 +58,16 @@ class TestTank:
         self, tank1: Tank, tank2: Tank, tank_manager: TankManager
     ):
         tank_manager.pour_water(tank1.name, 10)
-        tank_manager.transfer_water(tank1.name, tank2, 10)
+        tank_manager.transfer_water(tank1.name, tank2.name, 10)
         assert tank1.current_volume == 0
         assert tank2.current_volume == 10
 
     def test_transfer_water_tank_has_not_enough_water(
-        self, tank1: Tank, tank2: Tank
+        self, tank1: Tank, tank2: Tank, tank_manager: TankManager
     ):
-        assert not tank1.transfer_water(tank2, 20)
+        assert not tank_manager.transfer_water(tank1.name, tank2.name, 20)
 
     def test_transfer_water_tank1_capacity_exceeded(
-        self, tank1: Tank, tank2: Tank
+        self, tank1: Tank, tank2: Tank, tank_manager: TankManager
     ):
-        assert not tank1.transfer_water(tank2, 105)
+        assert not tank_manager.transfer_water(tank1.name, tank2.name, 105)

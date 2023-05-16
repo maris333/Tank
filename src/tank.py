@@ -51,17 +51,3 @@ class Tank:
         self.current_volume -= volume
         print(f"{self.name.title()} has {self.current_volume} water")
         return True
-
-    def transfer_water(
-            self, to_tank: "Tank", volume: int
-    ) -> bool:
-        if self.current_volume < volume:
-            print(f"{self.name.title()} does not have enough water")
-            return False
-        if to_tank.current_volume + volume > to_tank.capacity:
-            print(f"{to_tank.name.title()} capacity exceeded")
-            return False
-        self.current_volume -= volume
-        to_tank.current_volume += volume
-        print(f"{volume} water poured from {self.name} to {to_tank.name}")
-        return True

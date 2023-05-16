@@ -25,8 +25,8 @@ class TankManager:
             self.event_sourcer.water_poured_out(volume, self._get_tank(tank_name), False)
         self.event_sourcer.water_poured_out(volume, self._get_tank(tank_name), True)
 
-    def transfer_water(self, tank_name: str, to_tank: Tank, volume: int) -> None:
-        if not self._get_tank(tank_name).transfer_water(to_tank, volume):
-            self.event_sourcer.water_transferred(volume, to_tank, self._get_tank(tank_name), False)
-        self.event_sourcer.water_transferred(volume, to_tank, self._get_tank(tank_name), True)
+    def transfer_water(self, tank_name: str, to_tank: str, volume: int) -> None:
+        if not (self._get_tank(tank_name).pour_out_water(volume) | self._get_tank(to_tank).pour_water(volume)):
+            self.event_sourcer.water_transferred(volume, self._get_tank(to_tank), self._get_tank(tank_name), False)
+        self.event_sourcer.water_transferred(volume, self._get_tank(to_tank), self._get_tank(tank_name), True)
 
