@@ -11,9 +11,7 @@ class TankManager:
         self.event_sourcer = event_sourcer
 
     def _get_tank(self, tank_name: str) -> Tank:
-        for tank in self.tank_helper.list_of_tanks:
-            if tank.name == tank_name:
-                return tank
+        return next(filter(lambda tank: tank.name == tank_name, self.tank_helper.list_of_tanks), None)
 
     def pour_water(self, tank_name: str, volume: int) -> None:
         if not self._get_tank(tank_name).pour_water(volume):
