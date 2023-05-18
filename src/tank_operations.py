@@ -19,9 +19,21 @@ class TankOperations:
     def operations(self) -> List:
         return self._operations
 
-    def get_tanks_with_most_failed_operations(self) -> List:
+    @staticmethod
+    def _create_tanks_dictionary():
         tanks: Dict[str, int] = {}
-        tanks = {op.tank: tanks.get(op.tank, 0) + 1 for op in self.operations if op.success is False}
+        return tanks
+
+    def _create_tanks_dictionary_for_most_failed_operation(self):
+        tanks = self._create_tanks_dictionary()
+        return {op.tank: tanks.get(op.tank, 0) + 1 for op in self.operations if op.success is False}
+
+    def _create_tanks_dictionary_for_most_operations_of_type(self, operation_name):
+        tanks = self._create_tanks_dictionary()
+        return {op.tank: tanks.get(op.tank, 0) + 1 for op in self.operations if op.name == operation_name}
+
+    def get_tanks_with_most_failed_operations(self) -> List:
+        tanks = self._create_tanks_dictionary_for_most_failed_operation()
         if tanks:
             print(f"List of tanks with most failed operations:"
                   f" {list(filter(lambda key: tanks.get(key) == max(tanks.values()), tanks))}")
@@ -29,8 +41,7 @@ class TankOperations:
         return []
 
     def get_tanks_with_most_operations_of_type(self, operation_name: str) -> List:
-        tanks: Dict[str, int] = {}
-        tanks = {op.tank: tanks.get(op.tank, 0) + 1 for op in self.operations if op.name == operation_name}
+        tanks = self._create_tanks_dictionary_for_most_operations_of_type(operation_name)
         if tanks:
             print(f"List of tanks with most operations of type {operation_name}: "
                   f"{list(filter(lambda key: tanks.get(key) == max(tanks.values()), tanks))}")
